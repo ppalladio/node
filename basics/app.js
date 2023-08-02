@@ -58,24 +58,46 @@
 
 //> HTTP
 
-const http = require('http');
 //@ example 1
+// const http = require('http');
 // http.createServer((req, res) => {
 //     res.write('Hello World');
 //     res.end();
 // }).listen(5000);
 
 //@ example 2
-const server = http.createServer((req, res) => {
-    if (req.url === '/') {
-        res.write('Hello World');
-        res.end();
-    }
-    if (req.url === '/about') {
-        res.end(`<h1>About</h1>`);
-    }
-    res.end(`<h1>Not Found</h1>
-	<a href="/">Home</a>`);
-});
+// const server = http.createServer((req, res) => {
+//     if (req.url === '/') {
+//         res.write('Hello World');
+//         res.end();
+//     }
+//     if (req.url === '/about') {
+//         res.end(`<h1>About</h1>`);
+//     }
+//     res.end(`<h1>Not Found</h1>
+// 	<a href="/">Home</a>`);
+// });
 
-server.listen(5000);
+// server.listen(5000);
+
+//> promises
+
+const fs = require('fs');
+const getText = (path) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(path, 'utf8', (err, data) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
+    });
+};
+getText('./first.txt')
+    .then((result) => {
+        console.log(result);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
