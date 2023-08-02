@@ -1,5 +1,5 @@
 // > global
-// console.log("dirname", __dirname); 
+// console.log("dirname", __dirname);
 // console.log("filename", __filename);
 // console.log(require);
 // console.log(module);
@@ -7,7 +7,6 @@
 // setInterval(() => {
 // 	console.log(__dirname);
 // }, 1000);
-
 
 //> module
 // const data = require("./module");
@@ -31,29 +30,52 @@
 // //*absolute path
 // const absolutePath = path.resolve(__dirname, 'content', 'hello.txt');
 
-
 // console.log(absolutePath);
 // console.log(base);
 // console.log(filePath);
 
 //> file system
 
-const fs = require('fs')
-fs.writeFileSync('./first.txt', 'first file');
-fs.writeFileSync('./second.txt', 'second file');
-const first = fs.readFileSync('./first.txt','utf8')
-const second = fs.readFileSync('./second.txt','utf8')
+// const fs = require('fs')
+// fs.writeFileSync('./first.txt', 'first file');
+// fs.writeFileSync('./second.txt', 'second file');
+// const first = fs.readFileSync('./first.txt','utf8')
+// const second = fs.readFileSync('./second.txt','utf8')
 
 //*overwrite/create the file
-fs.writeFileSync('./result.txt',`${first}\n${second}`);
+// fs.writeFileSync('./result.txt',`${first}\n${second}`);
 
 //* concat instead of overwrite
-fs.writeFileSync('./result_concat.txt',`${first}\n${second}`,{flag:'a'});
+// fs.writeFileSync('./result_concat.txt',`${first}\n${second}`,{flag:'a'});
 
 //> read/writing using callbacks
-fs.readFile('./first.txt', 'utf8', (err, data) => {
-	if(err){
-		throw err;
-	}
-	console.log(data);
-})
+// fs.readFile('./first.txt', 'utf8', (err, data) => {
+// 	if(err){
+// 		throw err;
+// 	}
+// 	console.log(data);
+// })
+
+//> HTTP
+
+const http = require('http');
+//@ example 1
+// http.createServer((req, res) => {
+//     res.write('Hello World');
+//     res.end();
+// }).listen(5000);
+
+//@ example 2
+const server = http.createServer((req, res) => {
+    if (req.url === '/') {
+        res.write('Hello World');
+        res.end();
+    }
+    if (req.url === '/about') {
+        res.end(`<h1>About</h1>`);
+    }
+    res.end(`<h1>Not Found</h1>
+	<a href="/">Home</a>`);
+});
+
+server.listen(5000);
