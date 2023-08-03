@@ -94,10 +94,41 @@ const getText = (path) => {
         });
     });
 };
-getText('./first.txt')
-    .then((result) => {
-        console.log(result);
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+// getText('./first.txt')
+//     .then((result) => {
+//         console.log(result);
+//     })
+//     .catch((err) => {
+//         console.log(err);
+//     });
+const util = require('util');
+//@
+const readFilePromise = util.promisify(fs.readFile);
+const writeFilePromise = util.promisify(fs.writeFile);
+const { readFile } = require('fs').promises;
+
+const start = async () => {
+    try {
+        const first = await getText('./first.txt');
+        console.log(first);
+
+        // @ use .promises method
+        const second = await readFile('./second.txt', 'utf8');
+        console.log(second);
+        writeFilePromise('./result.txt', `${first}\n${second}`);
+        const resultPromise = readFilePromise('./result.txt', 'utf8');
+
+        //@ resultPromise is a promise that needs to be resolved
+        resultPromise
+            .then((result) => {
+                console.log(result);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+start();
