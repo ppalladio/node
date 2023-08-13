@@ -1,15 +1,13 @@
 const express = require('express');
 const app = express();
+const logger = require('./logger')
+const auth = require('./authorize')
 //req=>middleware=>res
 //> middleware
-const logger = (req, res, next) => {
-    const method = req.method;
-    const url = req.url;
-    const time = new Date().toFullYear();
-    console.log(method, url, time);
-    next();
-};
-app.get('/', logger, (req, res) => {
+// app.use(logger)
+//> use multiple functions
+app.use([auth,logger])
+app.get('/', (req, res) => {
     res.send('home');
 });
 app.get('/about', (req, res) => {
