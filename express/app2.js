@@ -5,12 +5,22 @@ const auth = require('./authorize')
 //req=>middleware=>res
 //> middleware
 // app.use(logger)
-//> use multiple functions
-app.use([auth,logger])
+//> app.use multiple functions
+// app.use([auth,logger])
+
+// app.get('/', (req, res) => {
+//     res.send('home');
+// });
+//>router middleware
+// app.get('/about',[auth,logger], (req, res) => {
+//     res.send('about');
+// });
+//>third party middleware
+// const morgan = require('morgan');
+
+// app.use(morgan('tiny'))
+
 app.get('/', (req, res) => {
     res.send('home');
-});
-app.get('/about', (req, res) => {
-    res.send('about');
 });
 app.listen(5000);
