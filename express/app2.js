@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
-const logger = require('./logger')
-const auth = require('./authorize')
+const logger = require('./logger');
+const auth = require('./authorize');
 //req=>middleware=>res
 //> middleware
 // app.use(logger)
@@ -20,6 +20,24 @@ const auth = require('./authorize')
 
 // app.use(morgan('tiny'))
 
+//> get method
+
+const { people } = require('./data');
+app.get('/api/people', (req, res) => {
+    res.status(200).json({ success: true, data: people });
+});
+//> post method
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static('./methods-public'));
+app.post('/login', (req, res) => {
+    console.log(req.body);
+	//@input.name
+    const { name } = req.body;
+    if (name) {
+        res.status(200).send(`welcome ${name}`);
+    }
+    res.status(401).send('provide credentials');
+});
 app.get('/', (req, res) => {
     res.send('home');
 });
