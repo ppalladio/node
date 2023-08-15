@@ -27,18 +27,29 @@ app.get('/api/people', (req, res) => {
     res.status(200).json({ success: true, data: people });
 });
 //> post method
-app.use(express.urlencoded({ extended: false }));
+// app.use(express.urlencoded({ extended: false }));
+// app.use(express.static('./methods-public'));
+// app.post('/login', (req, res) => {
+//     console.log(req.body);
+// 	//@input.name
+//     const { name } = req.body;
+//     if (name) {
+//         res.status(200).send(`welcome ${name}`);
+//     }
+//     res.status(401).send('provide credentials');
+// });
+
+//> post/ js method
+app.use(express.json());
 app.use(express.static('./methods-public'));
-app.post('/login', (req, res) => {
-    console.log(req.body);
-	//@input.name
+app.post('/api/people', (req, res) => {
     const { name } = req.body;
-    if (name) {
-        res.status(200).send(`welcome ${name}`);
+    if (!name) {
+        res.status(400).json({
+            success: false,
+            message: 'please provide name',
+        });
     }
-    res.status(401).send('provide credentials');
-});
-app.get('/', (req, res) => {
-    res.send('home');
+    res.status(201).json({ success: true, person: name });
 });
 app.listen(5000);
