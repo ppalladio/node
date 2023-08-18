@@ -96,75 +96,20 @@ const auth = require('./authorize');
 
 //> get method
 
-const { people } = require('./data');
-app.get('/api/people', (req, res) => {
-    res.status(200).json({ success: true, data: people });
-});
+
+
 //> post method
 // app.use(express.urlencoded({ extended: false }));
 // app.use(express.static('./methods-public'));
-// app.post('/login', (req, res) => {
-//     console.log(req.body);
-// 	//@input.name
-//     const { name } = req.body;
-//     if (name) {
-//         res.status(200).send(`welcome ${name}`);
-//     }
-//     res.status(401).send('provide credentials');
-// });
+
 
 //> post/ js method
 app.use(express.json());
 app.use(express.static('./methods-public'));
-app.post('/api/people', (req, res) => {
-    const { name } = req.body;
-    if (!name) {
-        res.status(400).json({
-            success: false,
-            message: 'please provide name',
-        });
-    }
-    res.status(201).json({ success: true, person: name });
-});
 
-//> put method
-
-app.put('/api/people/:id', (req, res) => {
-    const { id } = req.params;
-    const { name } = req.body;
-    const people = people.find((person) => person.id === Number(id));
-
-    if (!people) {
-        return res
-            .status(404)
-            .json({ success: false, message: `id ${id} not found` });
-    }
-    const newPeople = people.map((person) => {
-        if (person.id === Number(id)) {
-            person.name = name;
-        }
-        return person;
-    });
-    res.status(200).json({
-        success: true,
-        message: 'person updated',
-        data: newPeople,
-    });
-});
-
-//> delete method
-
-app.delete('/api/people/:id', (req, res) => {
-    const person = people.find((person) => person.id === Number(req.params.id));
-
-    if (!person) {
-        return res
-            .status(404)
-            .json({ success: false, message: `id ${req.params.id} not found` });
-    }
-    const newPeople = people.filter(
-        (person) => person.id !== Number(req.params.id),
-    );
-    res.status(200).json({ success: true, data: newPeople });
-});
+//>routing
+const login = require('./routes/auth')
+const people = require('./routes/people')
+app.use('/api/people',people)
+app.use('/login',login)
 app.listen(5000, () => {});
